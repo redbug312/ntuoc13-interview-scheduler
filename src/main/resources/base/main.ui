@@ -88,7 +88,7 @@
           <property name="title">
            <string>選取欄位 (columns)</string>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -106,7 +106,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QSpinBox" name="interviewee_spinbox"/>
+             <widget class="AlphabetSpinBox" name="interviewee_spinbox"/>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="timeslot_label">
@@ -116,7 +116,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QSpinBox" name="timeslot_spinbox"/>
+             <widget class="AlphabetSpinBox" name="timeslot_spinbox"/>
             </item>
            </layout>
           </widget>
@@ -144,7 +144,7 @@
           <property name="title">
            <string>選取列數 (rows)</string>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -292,6 +292,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AlphabetSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header location="global">alphabetspinbox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
