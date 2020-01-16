@@ -34,13 +34,13 @@ class MainWindow(QMainWindow):
     @pyqtSlot()
     def open_xlsx(self):
         # file dialog for xlsx
-        dialog = QFileDialog(parent=self)
-        dialog.setFileMode(QFileDialog.ExistingFile)
-        dialog.setNameFilter('Spreadsheets (*.xlsx)')
-        if not dialog.exec_():
-            return
-        xlsx = dialog.selectedFiles()[0]
-        # xlsx = 'example.xlsx'
+        # dialog = QFileDialog(parent=self)
+        # dialog.setFileMode(QFileDialog.ExistingFile)
+        # dialog.setNameFilter('Spreadsheets (*.xlsx)')
+        # if not dialog.exec_():
+        #     return
+        # xlsx = dialog.selectedFiles()[0]
+        xlsx = 'example.xlsx'
         # load xlsx into data
         wb = openpyxl.load_workbook(xlsx)
         ws = wb.active

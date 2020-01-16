@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/RedBug312/ntuoc13-interview-scheduler.svg?branch=master)](https://travis-ci.com/RedBug312/ntuoc13-interview-scheduler)
+
 `fbs freeze`
 
 On Windows, ensure Visual C++ Redistribute for Visual Studio [2010][msvcr100-dll], [2012][msvcr110-dll], [2015][crtvcr140-dll] are installed.
