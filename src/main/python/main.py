@@ -11,7 +11,7 @@ class AppContext(ApplicationContext):
         return self.app.exec_()
 
     def get_ui(self):
-        return self.get_resource('main.ui')
+        return self.get_resource('window.ui')
 
     @cached_property
     def window(self):
