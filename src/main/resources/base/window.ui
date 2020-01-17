@@ -44,12 +44,18 @@
              <property name="minimum">
               <number>1</number>
              </property>
+             <property name="value">
+              <number>3</number>
+             </property>
             </widget>
            </item>
            <item row="1" column="1">
             <widget class="QSpinBox" name="tmsltSpinbox">
              <property name="minimum">
               <number>1</number>
+             </property>
+             <property name="value">
+              <number>5</number>
              </property>
             </widget>
            </item>
@@ -85,12 +91,18 @@
              <property name="minimum">
               <number>1</number>
              </property>
+             <property name="value">
+              <number>2</number>
+             </property>
             </widget>
            </item>
            <item row="1" column="1">
             <widget class="QSpinBox" name="endRowSpinbox">
              <property name="minimum">
               <number>1</number>
+             </property>
+             <property name="value">
+              <number>5</number>
              </property>
             </widget>
            </item>
@@ -124,7 +136,7 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QTableWidget" name="inputTableWidget"/>
+           <widget class="QTableView" name="inputTableView"/>
           </item>
          </layout>
         </widget>
@@ -190,5 +202,102 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>intvwSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>update_ranges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tmsltSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>update_ranges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>endRowSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>update_ranges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startRowSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>update_ranges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileLoadButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>open_xlsx()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>662</x>
+     <y>555</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileWriteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>compute_matching()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>748</x>
+     <y>555</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
