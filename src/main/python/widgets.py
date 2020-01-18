@@ -2,13 +2,9 @@
 from PyQt5.QtWidgets import QSpinBox
 
 
-def int2alpha(num):
-    return chr(ord('A') + min(num, 25))
-
-
 class AlphabetSpinBox(QSpinBox):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
     def textFromValue(self, num):
-        return int2alpha(num)
+        return chr(64 + min(num, 25))  # assume < 25 columns

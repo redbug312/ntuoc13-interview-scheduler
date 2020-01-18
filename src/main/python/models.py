@@ -3,7 +3,7 @@ import openpyxl
 from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QColor
 
-from alphabetspinbox import int2alpha
+from widgets import AlphabetSpinBox
 
 
 DEFAULT_COLOR = QColor('white')
@@ -47,18 +47,17 @@ class SpreadsheetTableModel(QAbstractTableModel):
         if role != Qt.DisplayRole:
             return None
         elif orientation == Qt.Horizontal:
-            return int2alpha(section)
+            return AlphabetSpinBox.textFromValue(None, section + 1)
         else:
-            return section
+            return section + 1
 
     def data(self, index, role=Qt.DisplayRole):
-        row, col = index.row(), index.column()
-
         if role == Qt.DisplayRole:
+            row, col = index.row(), index.column()
             return self.sheet[row][col]
         elif role == Qt.BackgroundRole:
             includes = [range for range in self.ranges.values()
-                        if range.include(row, col)]
+                        if range.include(index)]
             if len(includes) == 0:
                 return DEFAULT_COLOR
             elif len(includes) == 1:
@@ -73,13 +72,13 @@ class SpreadsheetTableModel(QAbstractTableModel):
 class SpreadsheetRange:
     def __init__(self, sheet, rows=(0, 0), cols=(0, 0), color=None):
         self.sheet = sheet
-        self.rows = rows[0], rows[1] + 1
-        self.cols = cols[0], cols[1] + 1
+        self.rows = rows[0] - 1, rows[1]
+        self.cols = cols[0] - 1, cols[1]
         self.color = color
 
-    def include(self, row, col):
-        return self.rows[0] <= row < self.rows[1] and \
-               self.cols[0] <= col < self.cols[1]
+    def include(self, index):
+        return self.rows[0] <= index.row() < self.rows[1] and \
+               self.cols[0] <= index.column() < self.cols[1]
 
     def corners(self):
         return [self.sheet.index(*pos) for pos in zip(self.rows, self.cols)]
