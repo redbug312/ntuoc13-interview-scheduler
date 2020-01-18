@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
     def loadXlsx(self, xlsx):
         self.sheets[0].populate(xlsx)
         self.updateSheetRanges()
-        self.statusLabel.setText('載入 %d 列資料。' % self.sheets[0].rowCount())
+        self.statusbar.showMessage('載入 %d 列資料。' % self.sheets[0].rowCount())
 
     @slot()
     def computeMatching(self):
