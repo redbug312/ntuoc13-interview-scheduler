@@ -9,9 +9,9 @@ from models import SpreadsheetTableModel
 
 
 DEFAULT_COLOR = QColor('white')
-INTVW_COLOR = QColor(240, 198, 116, 100)
-TMSLT_COLOR = QColor(138, 190, 183, 100)
-ERROR_COLOR = QColor(204, 102, 102, 100)
+INTVW_COLOR = QColor(252, 244, 228)
+TMSLT_COLOR = QColor(232, 242, 241)
+ERROR_COLOR = QColor(235, 195, 195)
 
 
 class MainWindow(QMainWindow):
@@ -21,6 +21,8 @@ class MainWindow(QMainWindow):
 
         self.sheets = [SpreadsheetTableModel()]
         self.inputTableView.setModel(self.sheets[0])
+        self.intvwSpinbox.setStyleSheet('background-color: %s' % INTVW_COLOR.name())
+        self.tmsltSpinbox.setStyleSheet('background-color: %s' % TMSLT_COLOR.name())
 
     @slot()
     def openXlsx(self):
