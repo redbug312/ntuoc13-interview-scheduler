@@ -136,9 +136,15 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QTableView" name="inputTableView">
-            <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
+           <widget class="SpreadsheetTableView" name="inputTableView">
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+            <property name="tabKeyNavigation">
+             <bool>false</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::NoSelection</enum>
             </property>
            </widget>
           </item>
@@ -211,6 +217,14 @@
    <extends>QSpinBox</extends>
    <header location="global">widgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>SpreadsheetTableView</class>
+   <extends>QTableView</extends>
+   <header location="global">widgets.h</header>
+   <slots>
+    <signal>dropFile(QString)</signal>
+   </slots>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -218,7 +232,7 @@
    <sender>intvwSpinbox</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>update_ranges()</slot>
+   <slot>updateSheetRanges()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>104</x>
@@ -234,7 +248,7 @@
    <sender>tmsltSpinbox</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>update_ranges()</slot>
+   <slot>updateSheetRanges()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>104</x>
@@ -250,7 +264,7 @@
    <sender>endRowSpinbox</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>update_ranges()</slot>
+   <slot>updateSheetRanges()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>104</x>
@@ -266,7 +280,7 @@
    <sender>startRowSpinbox</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>update_ranges()</slot>
+   <slot>updateSheetRanges()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>104</x>
@@ -282,7 +296,7 @@
    <sender>fileLoadButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>open_xlsx()</slot>
+   <slot>openXlsx()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>662</x>
@@ -298,7 +312,7 @@
    <sender>fileWriteButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>compute_matching()</slot>
+   <slot>computeMatching()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>748</x>
@@ -310,5 +324,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>inputTableView</sender>
+   <signal>dropFile(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>loadXlsx(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>561</x>
+     <y>368</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>loadXlsx(QString)</slot>
+ </slots>
 </ui>

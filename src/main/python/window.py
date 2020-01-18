@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
         self.inputTableView.setModel(self.sheets[0])
 
     @slot()
-    def open_xlsx(self):
+    def openXlsx(self):
         # dialog = QFileDialog(parent=self)
         # dialog.setFileMode(QFileDialog.ExistingFile)
         # dialog.setNameFilter('Spreadsheets (*.xlsx)')
@@ -31,12 +31,16 @@ class MainWindow(QMainWindow):
         #     return
         # xlsx = dialog.selectedFiles()[0]
         xlsx = 'example.xlsx'
+        self.loadXlsx(xlsx)
+
+    @slot(str)
+    def loadXlsx(self, xlsx):
         self.sheets[0].populate(xlsx)
-        self.update_ranges()
+        self.updateSheetRanges()
         self.statusLabel.setText('載入 %d 列資料。' % self.sheets[0].rowCount())
 
     @slot()
-    def compute_matching(self):
+    def computeMatching(self):
         B = nx.Graph()
         intvws = self.sheets[0].range('interviewee').iterate()
         tmslts = self.sheets[0].range('timeslot').iterate()
@@ -50,7 +54,7 @@ class MainWindow(QMainWindow):
             print('%s -> %s' % (interviewee, matches[interviewee]))
 
     @slot()
-    def update_ranges(self):
+    def updateSheetRanges(self):
         rows = self.startRowSpinbox.value(), self.endRowSpinbox.value()
         cols_intvw = (self.intvwSpinbox.value(), ) * 2
         cols_tmslt = (self.tmsltSpinbox.value(), ) * 2

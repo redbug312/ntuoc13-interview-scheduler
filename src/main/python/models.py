@@ -14,6 +14,7 @@ class SpreadsheetTableModel(QAbstractTableModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ranges = {}
+        self.sheet = [[]]
         self.row_count = 0
         self.column_count = 0
 
