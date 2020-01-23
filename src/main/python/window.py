@@ -17,7 +17,10 @@ ERROR_COLOR = QColor(235, 195, 195)
 class MainWindow(QMainWindow):
     def __init__(self, context, parent=None):
         super().__init__(parent)
-        uic.loadUi(context.get_ui(), self)
+        uic.loadUi(context.Ui, self)
+        uic.loadUi(context.placeholderUi, self.dragDropFrame)
+        self.dragDropFrame.setOverlay(self.inputTableView)
+        self.dragDropFrame.setContent(context.excelPixmap, '回應表格未開啟')
 
         self.sheets = [SpreadsheetTableModel()]
         self.inputTableView.setModel(self.sheets[0])
@@ -39,6 +42,7 @@ class MainWindow(QMainWindow):
     def loadXlsx(self, xlsx):
         self.sheets[0].populate(xlsx)
         self.updateSheetRanges()
+        self.dragDropFrame.hide()
         self.statusbar.showMessage('載入 %d 列資料。' % self.sheets[0].rowCount())
 
     @slot()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from PyQt5.QtCore import pyqtSignal as signal
-from PyQt5.QtWidgets import QSpinBox, QTableView
+from PyQt5.QtWidgets import QSpinBox, QFrame
 
 
 class AlphabetSpinBox(QSpinBox):
@@ -12,11 +12,24 @@ class AlphabetSpinBox(QSpinBox):
         return chr(64 + num)
 
 
-class SpreadsheetTableView(QTableView):
+class DragDropFrame(QFrame):
     dropFile = signal(str, name='dropFile')
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setAcceptDrops(True)
+
+    def setOverlay(self, overlay):
+        self.overlay = overlay
+        self.overlay.hide()
+
+    def setContent(self, icon, text):
+        self.iconLabel.setPixmap(icon)
+        self.textLabel.setText(text)
+
+    def hide(self):
+        super().hide()
+        self.overlay.show()
 
     def dragEnterEvent(self, event):
         event.accept()
@@ -29,7 +42,6 @@ class SpreadsheetTableView(QTableView):
         if len(urls) == 1:
             url = urls[0].url()
             if url.startswith('file://') and url.endswith('.xlsx'):
-                # len('file://') == 7
-                self.dropFile.emit(url[7:])
+                self.dropFile.emit(url[7:])  # len('file://') == 7
                 event.accept()
         event.ignore()

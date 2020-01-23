@@ -177,7 +177,7 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="SpreadsheetTableView" name="inputTableView">
+           <widget class="QTableView" name="inputTableView">
             <property name="acceptDrops">
              <bool>true</bool>
             </property>
@@ -188,6 +188,9 @@
              <enum>QAbstractItemView::NoSelection</enum>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="DragDropFrame" name="dragDropFrame"/>
           </item>
          </layout>
         </widget>
@@ -216,9 +219,10 @@
    <header location="global">widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>SpreadsheetTableView</class>
-   <extends>QTableView</extends>
+   <class>DragDropFrame</class>
+   <extends>QFrame</extends>
    <header location="global">widgets.h</header>
+   <container>1</container>
    <slots>
     <signal>dropFile(QString)</signal>
    </slots>
@@ -297,8 +301,8 @@
    <slot>openXlsx()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>662</x>
-     <y>555</y>
+     <x>142</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -313,8 +317,8 @@
    <slot>computeMatching()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>748</x>
-     <y>555</y>
+     <x>142</x>
+     <y>567</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -323,7 +327,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>inputTableView</sender>
+   <sender>dragDropFrame</sender>
    <signal>dropFile(QString)</signal>
    <receiver>MainWindow</receiver>
    <slot>loadXlsx(QString)</slot>
@@ -339,7 +343,4 @@
    </hints>
   </connection>
  </connections>
- <slots>
-  <slot>loadXlsx(QString)</slot>
- </slots>
 </ui>
