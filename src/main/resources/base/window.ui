@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="leftMargin">
+     <number>9</number>
+    </property>
+    <property name="topMargin">
+     <number>9</number>
+    </property>
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
+    <property name="bottomMargin">
+     <number>9</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>選擇欄位 (columns)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="intvwLabel">
+             <property name="text">
+              <string>面試人員</string>
+             </property>
+             <property name="buddy">
+              <cstring>intvwSpinbox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="tmsltLabel">
+             <property name="text">
+              <string>面試時間</string>
+             </property>
+             <property name="buddy">
+              <cstring>tmsltSpinbox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="AlphabetSpinBox" name="intvwSpinbox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>3</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="AlphabetSpinBox" name="tmsltSpinbox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>5</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>選擇列數 (rows)</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="startRowLabel">
+             <property name="text">
+              <string>開始列數</string>
+             </property>
+             <property name="buddy">
+              <cstring>startRowSpinbox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="endRowLabel">
+             <property name="text">
+              <string>結束列數</string>
+             </property>
+             <property name="buddy">
+              <cstring>endRowSpinbox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="startRowSpinbox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="endRowSpinbox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>6</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="fileLoadButton">
+        <property name="text">
+         <string>開啟回應表格(&amp;O)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="fileWriteButton">
+        <property name="text">
+         <string>匯出排程結果(&amp;E)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>回應表格</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QTableView" name="inputTableView">
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+            <property name="tabKeyNavigation">
+             <bool>false</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::NoSelection</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="DragDropFrame" name="dragDropFrame"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AlphabetSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header location="global">widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DragDropFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">widgets.h</header>
+   <container>1</container>
+   <slots>
+    <signal>dropFile(QString)</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>intvwSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateSheetRanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tmsltSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateSheetRanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>endRowSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateSheetRanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startRowSpinbox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateSheetRanges()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileLoadButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openXlsx()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>538</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fileWriteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>computeMatching()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>567</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dragDropFrame</sender>
+   <signal>dropFile(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>loadXlsx(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>561</x>
+     <y>368</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
