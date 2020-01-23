@@ -43,17 +43,25 @@ class MainWindow(QMainWindow):
 
     @slot()
     def computeMatching(self):
-        B = nx.Graph()
-        intvws = self.sheets[0].range('interviewee').iterate()
-        tmslts = self.sheets[0].range('timeslot').iterate()
+        G = nx.Graph()
+        intvws = self.sheets[0].range('interviewee')
+        tmslts = self.sheets[0].range('timeslot')
         for interviewee, timeslots in zip(intvws, tmslts):
-            B.add_node(interviewee, bipartite=0)
-            B.add_nodes_from(timeslots.split(', '), bipartite=1)
-            B.add_edges_from([(interviewee, t) for t in timeslots.split(', ')])
-        matches = nx.bipartite.maximum_matching(B)
-        print(matches)
-        for interviewee in nx.bipartite.sets(B)[0]:
-            print('%s -> %s' % (interviewee, matches[interviewee]))
+            G.add_node(interviewee, bipartite=0)
+            G.add_nodes_from(timeslots.split(', '), bipartite=1)
+            G.add_edges_from([(interviewee, t) for t in timeslots.split(', ')])
+        matches = {}
+        for B in nx.connected_components(G):
+            matches.update(nx.bipartite.maximum_matching(G.subgraph(B)))
+        # print(matches)
+        for interviewee in intvws:
+            if interviewee in matches:
+                print('%s -> %s' % (interviewee, matches[interviewee]))
+        # left = [node[0] for node in G.nodes(data=True) if node[1]['bipartite'] == 0]
+        # import matplotlib.pyplot as plt
+        # nx.draw(G, pos=nx.bipartite_layout(G, left))
+        # nx.draw_networkx_labels(G, pos=nx.bipartite_layout(G, left))
+        # plt.show()
 
     @slot()
     def updateSheetRanges(self):

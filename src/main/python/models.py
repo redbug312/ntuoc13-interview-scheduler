@@ -77,15 +77,15 @@ class SpreadsheetRange:
         self.cols = cols[0] - 1, cols[1]
         self.color = color
 
+    def __iter__(self):
+        for index in [self.sheet.index(row, col)
+                      for row in range(*self.rows)
+                      for col in range(*self.cols)]:
+            yield self.sheet.data(index)
+
     def include(self, index):
         return self.rows[0] <= index.row() < self.rows[1] and \
                self.cols[0] <= index.column() < self.cols[1]
 
     def corners(self):
         return [self.sheet.index(*pos) for pos in zip(self.rows, self.cols)]
-
-    def iterate(self):
-        for index in [self.sheet.index(row, col)
-                      for row in range(*self.rows)
-                      for col in range(*self.cols)]:
-            yield self.sheet.data(index)
