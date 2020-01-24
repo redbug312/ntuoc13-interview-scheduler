@@ -28,7 +28,7 @@ class SpreadsheetTableModel(QAbstractTableModel):
         else:
             return
         self.row_count = len(self.sheet)
-        self.column_count = len(self.sheet[0])
+        self.column_count = len(self.sheet[0])  # must be header
         self.layoutChanged.emit()
 
     def range(self, name):
