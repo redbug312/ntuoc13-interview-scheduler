@@ -22,10 +22,12 @@ class MainWindow(QMainWindow):
         self.dragDropFrame.setOverlay(self.inputTableView)
         self.dragDropFrame.setContent(context.excelPixmap, '回應表格未開啟')
 
-        self.sheets = [SpreadsheetTableModel()]
+        self.sheets = [SpreadsheetTableModel() for _ in range(2)]
         self.inputTableView.setModel(self.sheets[0])
         self.intvwSpinbox.setStyleSheet('background-color: %s' % INTVW_COLOR.name())
         self.tmsltSpinbox.setStyleSheet('background-color: %s' % TMSLT_COLOR.name())
+        self.outputTableView.setModel(self.sheets[1])
+        self.tabWidget.removeTab(1)
 
     @slot()
     def openXlsx(self):
@@ -57,15 +59,15 @@ class MainWindow(QMainWindow):
         matches = {}
         for B in nx.connected_components(G):
             matches.update(nx.bipartite.maximum_matching(G.subgraph(B)))
-        # print(matches)
-        for interviewee in intvws:
-            if interviewee in matches:
-                print('%s -> %s' % (interviewee, matches[interviewee]))
-        # left = [node[0] for node in G.nodes(data=True) if node[1]['bipartite'] == 0]
+        right = [node[0] for node in G.nodes(data=True) if node[1]['bipartite'] == 1]
         # import matplotlib.pyplot as plt
         # nx.draw(G, pos=nx.bipartite_layout(G, left))
         # nx.draw_networkx_labels(G, pos=nx.bipartite_layout(G, left))
         # plt.show()
+        self.tabWidget.addTab(self.outputSheetTab, '排程結果')
+        data = [[key, matches[key] if key in matches else '']
+                for key in right]
+        self.sheets[1].populate(data)
 
     @slot()
     def updateSheetRanges(self):

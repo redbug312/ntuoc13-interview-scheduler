@@ -18,11 +18,15 @@ class SpreadsheetTableModel(QAbstractTableModel):
         self.row_count = 0
         self.column_count = 0
 
-    def populate(self, xlsx):
-        wb = openpyxl.load_workbook(xlsx)
-        ws = wb.active
-        self.sheet = [[str(cell.value or '') for cell in rows]
-                      for rows in ws.iter_rows()]
+    def populate(self, source):
+        if type(source) is list:
+            self.sheet = source
+        elif type(source) is str and source.endswith('.xlsx'):
+            ws = openpyxl.load_workbook(source).active
+            self.sheet = [[str(cell.value or '') for cell in rows]
+                          for rows in ws.iter_rows()]
+        else:
+            return
         self.row_count = len(self.sheet)
         self.column_count = len(self.sheet[0])
         self.layoutChanged.emit()
