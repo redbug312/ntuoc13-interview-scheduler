@@ -74,12 +74,10 @@ class SpreadsheetTableModel(QAbstractTableModel):
         return self.frame.shape[1]
 
     def headerData(self, section, orientation, role):
-        if role != Qt.DisplayRole:
-            return None
-        elif orientation == Qt.Horizontal:
-            return AlphabetSpinBox.textFromValue(None, section + 1)
-        else:
-            return section + 1
+        if role == Qt.DisplayRole:
+            return section + 1 if orientation == Qt.Vertical \
+                else AlphabetSpinBox.textFromValue(None, section + 1)
+        return None
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
@@ -90,14 +88,10 @@ class SpreadsheetTableModel(QAbstractTableModel):
         elif role == Qt.BackgroundRole:
             includes = [range for range in self.ranges.values()
                         if range.include(index)]
-            if len(includes) == 0:
-                return DEFAULT_COLOR
-            elif len(includes) == 1:
-                return includes[0].color
-            else:
-                return ERROR_COLOR
-        elif role == Qt.TextAlignmentRole:
-            return Qt.AlignLeft | Qt.AlignVCenter
+            background = DEFAULT_COLOR if len(includes) == 0 \
+                else includes[0].color if len(includes) == 1 \
+                else ERROR_COLOR
+            return background
         return None
 
 
