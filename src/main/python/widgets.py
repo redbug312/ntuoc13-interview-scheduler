@@ -6,10 +6,14 @@ from PyQt5.QtWidgets import QSpinBox, QFrame
 class AlphabetSpinBox(QSpinBox):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMaximum(25)  # only A-Y to simplify
+        self.setMaximum(702)  # allow columns from `A` to `ZZ`
 
     def textFromValue(self, num):
-        return chr(64 + num)
+        name = ''
+        while num:
+            num, rem = divmod(num - 1, 26)
+            name = chr(65 + rem) + name
+        return name
 
 
 class DragDropFrame(QFrame):
