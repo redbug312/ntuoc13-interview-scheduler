@@ -87,7 +87,17 @@
         <property name="title">
          <string>選擇列數 (rows)</string>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QCheckBox" name="columnheadCheckbox">
+           <property name="text">
+            <string>排序時固定首列</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="0">
@@ -279,8 +289,8 @@
    <slot>updateSheetRanges()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>104</x>
-     <y>206</y>
+     <x>129</x>
+     <y>245</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -295,8 +305,8 @@
    <slot>updateSheetRanges()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>104</x>
-     <y>176</y>
+     <x>129</x>
+     <y>215</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -343,12 +353,28 @@
    <slot>loadXlsx(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>561</x>
-     <y>368</y>
+     <x>778</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>548</x>
      <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>columnheadCheckbox</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateSheetColumnhead()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>76</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
     </hint>
    </hints>
   </connection>

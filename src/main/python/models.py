@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import openpyxl
 import pandas as pd
+from datetime import datetime
 from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QColor
 
@@ -16,14 +17,15 @@ class SpreadsheetTableModel(QAbstractTableModel):
         super().__init__(parent)
         self.ranges = {}
         self.frame = pd.DataFrame()
+        self.columnhead = False
 
     def populate(self, source):
         self.layoutAboutToBeChanged.emit()
-        if type(source) is list:
-            self.frame = pd.DataFrame(source)
-        elif type(source) is str and source.endswith('.xlsx'):
+        if type(source) is str and source.endswith('.xlsx'):
             ws = openpyxl.load_workbook(source).active
             self.frame = pd.DataFrame(ws.values)
+        else:
+            self.frame = pd.DataFrame(source)
         self.layoutChanged.emit()
 
     def range(self, name):
@@ -37,10 +39,33 @@ class SpreadsheetTableModel(QAbstractTableModel):
         self.dataChanged.emit(*range.corners())
         self.ranges[name] = range
 
-    def sort(self, col, order):
+    def columnhead(self):
+        return self.columnhead
+
+    def setColumnhead(self, header):
         self.layoutAboutToBeChanged.emit()
-        self.frame.sort_values(by=col, ascending=order, inplace=True)
+        self.columnhead = header
         self.layoutChanged.emit()
+
+    # QAbstractItemModel override functions below
+
+    def sort(self, ncol, order):
+        column = self.frame.columns[ncol]
+        head = self.frame.head(1)
+        self.layoutAboutToBeChanged.emit()
+        if self.columnhead:  # take out header before sort
+            self.frame.drop(head.index, inplace=True)
+        self.frame.sort_values(by=column, ascending=order,
+                               kind='mergesort', inplace=True)
+        if self.columnhead:  # put back header after sort
+            self.frame = pd.concat([head, self.frame])
+        self.layoutChanged.emit()
+
+    def flags(self, index):
+        flag = super().flags(index)
+        if self.columnhead and index.row() == 0:
+            flag &= ~Qt.ItemIsEnabled
+        return flag
 
     def rowCount(self, parent=QModelIndex()):
         return self.frame.shape[0]
@@ -58,8 +83,10 @@ class SpreadsheetTableModel(QAbstractTableModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
-            value = self.frame.iat[index.row(), index.column()]
-            return value if type(value) is not pd.Timestamp else str(value)
+            value = self.frame.iloc[index.row(), index.column()]
+            if type(value) in [pd.Timestamp, datetime]:
+                return str(value)
+            return value
         elif role == Qt.BackgroundRole:
             includes = [range for range in self.ranges.values()
                         if range.include(index)]

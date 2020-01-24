@@ -42,6 +42,7 @@ class MainWindow(QMainWindow):
     def loadXlsx(self, xlsx):
         self.dragDropFrame.hide()
         self.sheets[0].populate(xlsx)
+        self.updateSheetColumnhead()
         self.updateSheetRanges()
         self.intvwSpinbox.setStyleSheet('background-color: %s' % INTVW_COLOR.name())
         self.tmsltSpinbox.setStyleSheet('background-color: %s' % TMSLT_COLOR.name())
@@ -76,3 +77,8 @@ class MainWindow(QMainWindow):
         cols_tmslt = (self.tmsltSpinbox.value(), ) * 2
         self.sheets[0].setRange('interviewee', rows, cols_intvw, INTVW_COLOR)
         self.sheets[0].setRange('timeslot', rows, cols_tmslt, TMSLT_COLOR)
+
+    @slot()
+    def updateSheetColumnhead(self):
+        checked = self.columnheadCheckbox.isChecked()
+        self.sheets[0].setColumnhead(checked)
