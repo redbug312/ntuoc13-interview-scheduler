@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import openpyxl
+import pandas as pd
 from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QColor
 
@@ -14,21 +15,15 @@ class SpreadsheetTableModel(QAbstractTableModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ranges = {}
-        self.sheet = [[]]
-        self.row_count = 0
-        self.column_count = 0
+        self.frame = pd.DataFrame()
 
     def populate(self, source):
+        self.layoutAboutToBeChanged.emit()
         if type(source) is list:
-            self.sheet = source
+            self.frame = pd.DataFrame(source)
         elif type(source) is str and source.endswith('.xlsx'):
             ws = openpyxl.load_workbook(source).active
-            self.sheet = [[str(cell.value or '') for cell in rows]
-                          for rows in ws.iter_rows()]
-        else:
-            return
-        self.row_count = len(self.sheet)
-        self.column_count = len(self.sheet[0])  # must be header
+            self.frame = pd.DataFrame(ws.values)
         self.layoutChanged.emit()
 
     def range(self, name):
@@ -42,11 +37,16 @@ class SpreadsheetTableModel(QAbstractTableModel):
         self.dataChanged.emit(*range.corners())
         self.ranges[name] = range
 
+    def sort(self, col, order):
+        self.layoutAboutToBeChanged.emit()
+        self.frame.sort_values(by=col, ascending=order, inplace=True)
+        self.layoutChanged.emit()
+
     def rowCount(self, parent=QModelIndex()):
-        return self.row_count
+        return self.frame.shape[0]
 
     def columnCount(self, parent=QModelIndex()):
-        return self.column_count
+        return self.frame.shape[1]
 
     def headerData(self, section, orientation, role):
         if role != Qt.DisplayRole:
@@ -58,8 +58,8 @@ class SpreadsheetTableModel(QAbstractTableModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
-            row, col = index.row(), index.column()
-            return self.sheet[row][col]
+            value = self.frame.iat[index.row(), index.column()]
+            return value if type(value) is not pd.Timestamp else str(value)
         elif role == Qt.BackgroundRole:
             includes = [range for range in self.ranges.values()
                         if range.include(index)]
