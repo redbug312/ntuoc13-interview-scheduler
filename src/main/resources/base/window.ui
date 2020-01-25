@@ -32,7 +32,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>選擇欄位 (columns)</string>
+         <string>回應表格設定</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -79,15 +79,19 @@
            </item>
           </layout>
          </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>選擇列數 (rows)</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="Line" name="line">
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="midLineWidth">
+            <number>1</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="columnheadCheckbox">
            <property name="text">
@@ -110,16 +114,6 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="endRowLabel">
-             <property name="text">
-              <string>結束列數</string>
-             </property>
-             <property name="buddy">
-              <cstring>endRowSpinbox</cstring>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1">
             <widget class="QSpinBox" name="startRowSpinbox">
              <property name="minimum">
@@ -130,6 +124,16 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="endRowLabel">
+             <property name="text">
+              <string>結束列數</string>
+             </property>
+             <property name="buddy">
+              <cstring>endRowSpinbox</cstring>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <widget class="QSpinBox" name="endRowSpinbox">
              <property name="minimum">
@@ -137,6 +141,36 @@
              </property>
              <property name="value">
               <number>6</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>排程結果設定</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="capacityLabel">
+             <property name="text">
+              <string>時段人數</string>
+             </property>
+             <property name="buddy">
+              <cstring>capacitySpinBox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="capacitySpinBox">
+             <property name="minimum">
+              <number>1</number>
              </property>
             </widget>
            </item>
@@ -166,9 +200,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="scheduleButton">
+        <property name="text">
+         <string>找出最佳排程(&amp;F)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="fileWriteButton">
         <property name="text">
-         <string>匯出排程結果(&amp;E)</string>
+         <string>儲存排程結果(&amp;S)</string>
         </property>
        </widget>
       </item>
