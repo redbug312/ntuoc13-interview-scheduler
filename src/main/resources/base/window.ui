@@ -289,6 +289,20 @@
    </slots>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>intvwSpinbox</tabstop>
+  <tabstop>tmsltSpinbox</tabstop>
+  <tabstop>columnheadCheckbox</tabstop>
+  <tabstop>startRowSpinbox</tabstop>
+  <tabstop>endRowSpinbox</tabstop>
+  <tabstop>capacitySpinBox</tabstop>
+  <tabstop>fileLoadButton</tabstop>
+  <tabstop>scheduleButton</tabstop>
+  <tabstop>fileWriteButton</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>inputTableView</tabstop>
+  <tabstop>outputTableView</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
