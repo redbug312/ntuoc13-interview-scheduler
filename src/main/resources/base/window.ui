@@ -410,7 +410,7 @@
    <sender>placeholderFrame</sender>
    <signal>dropped(QString)</signal>
    <receiver>MainWindow</receiver>
-   <slot>loadXlsx(QString)</slot>
+   <slot>openXlsx(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>778</x>

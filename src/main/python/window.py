@@ -28,20 +28,20 @@ class MainWindow(QMainWindow):
         self.tabWidget.removeTab(1)
 
     @slot()
-    def openXlsx(self):
-        # dialog = QFileDialog(parent=self)
-        # dialog.setFileMode(QFileDialog.ExistingFile)
-        # dialog.setNameFilter('Spreadsheets (*.xlsx)')
-        # if not dialog.exec_():
-        #     return
-        # xlsx = dialog.selectedFiles()[0]
-        xlsx = 'example.xlsx'
-        self.loadXlsx(xlsx)
-
     @slot(str)
-    def loadXlsx(self, xlsx):
-        self.dragDropFrame.hide()
+    def openXlsx(self, xlsx=None):
+        if xlsx is None:
+            # dialog = QFileDialog(parent=self)
+            # dialog.setAcceptMode(QFileDialog.AcceptSave)
+            # dialog.setFileMode(QFileDialog.ExistingFile)
+            # dialog.setNameFilter('Spreadsheets (*.xlsx)')
+            # if not dialog.exec_():
+            #     return False
+            # xlsx = dialog.selectedFiles()[0]
+            xlsx = 'example.xlsx'
         self.sheets[0].populate(xlsx)
+        # View
+        self.placeholderFrame.hide()
         self.updateSheetColumnhead()
         self.updateSheetRanges()
         self.intvwSpinbox.setStyleSheet('background-color: %s' % INTVW_COLOR.name())
