@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 from functools import reduce
-from PyQt5.QtCore import pyqtSignal as signal
 from PyQt5.QtGui import QValidator
-from PyQt5.QtWidgets import QSpinBox, QFrame
+from PyQt5.QtWidgets import QSpinBox, QFrame, QTableView
+
+from mixins import DropableWidget
 
 
 class AlphabetSpinBox(QSpinBox):
@@ -28,12 +29,9 @@ class AlphabetSpinBox(QSpinBox):
         return name
 
 
-class DragDropFrame(QFrame):
-    dropFile = signal(str, name='dropFile')
-
+class DropableFrame(QFrame, DropableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setAcceptDrops(True)
 
     def setOverlay(self, overlay):
         self.overlay = overlay
@@ -47,17 +45,13 @@ class DragDropFrame(QFrame):
         super().hide()
         self.overlay.show()
 
-    def dragEnterEvent(self, event):
-        event.accept()
+    def isFileDropable(self, url):
+        return url.endswith('.xlsx')
 
-    def dragMoveEvent(self, event):
-        event.accept()
 
-    def dropEvent(self, event):
-        urls = event.mimeData().urls()
-        if len(urls) == 1:
-            url = urls[0].url()
-            if url.startswith('file://') and url.endswith('.xlsx'):
-                self.dropFile.emit(url[7:])  # len('file://') == 7
-                event.accept()
-        event.ignore()
+class DropableTableView(QTableView, DropableWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def isFileDropable(self, url):
+        return url.endswith('.xlsx')

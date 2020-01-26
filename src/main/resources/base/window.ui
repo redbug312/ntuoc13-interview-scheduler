@@ -228,7 +228,7 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QTableView" name="inputTableView">
+           <widget class="DropableTableView" name="inputTableView">
             <property name="tabKeyNavigation">
              <bool>false</bool>
             </property>
@@ -241,7 +241,7 @@
            </widget>
           </item>
           <item>
-           <widget class="DragDropFrame" name="dragDropFrame"/>
+           <widget class="DropableFrame" name="placeholderFrame"/>
           </item>
          </layout>
         </widget>
@@ -280,13 +280,18 @@
    <header location="global">widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>DragDropFrame</class>
+   <class>DropableFrame</class>
    <extends>QFrame</extends>
    <header location="global">widgets.h</header>
    <container>1</container>
    <slots>
-    <signal>dropFile(QString)</signal>
+    <signal>dropped(QString)</signal>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>DropableTableView</class>
+   <extends>QTableView</extends>
+   <header location="global">widgets.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -345,7 +350,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>129</x>
-     <y>245</y>
+     <y>212</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -361,7 +366,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>129</x>
-     <y>215</y>
+     <y>182</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -402,10 +407,26 @@
    </hints>
   </connection>
   <connection>
-   <sender>dragDropFrame</sender>
-   <signal>dropFile(QString)</signal>
+   <sender>placeholderFrame</sender>
+   <signal>dropped(QString)</signal>
    <receiver>MainWindow</receiver>
    <slot>loadXlsx(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>778</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputTableView</sender>
+   <signal>dropped(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openXlsx(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>778</x>
@@ -424,8 +445,8 @@
    <slot>updateSheetColumnhead()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>76</x>
-     <y>174</y>
+     <x>98</x>
+     <y>151</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>

@@ -18,9 +18,9 @@ class MainWindow(QMainWindow):
     def __init__(self, context, parent=None):
         super().__init__(parent)
         uic.loadUi(context.ui, self)
-        uic.loadUi(context.placeholderUi, self.dragDropFrame)
-        self.dragDropFrame.setOverlay(self.inputTableView)
-        self.dragDropFrame.setContent(context.excelPixmap, '回應表格未開啟')
+        uic.loadUi(context.placeholderUi, self.placeholderFrame)
+        self.placeholderFrame.setOverlay(self.inputTableView)
+        self.placeholderFrame.setContent(context.excelPixmap, '回應表格未開啟')
 
         self.sheets = [SpreadsheetTableModel() for _ in range(2)]
         self.inputTableView.setModel(self.sheets[0])
