@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import openpyxl
+from openpyxl.utils.dataframe import dataframe_to_rows
 import pandas as pd
 from datetime import datetime
 from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
@@ -22,11 +23,17 @@ class SpreadsheetTableModel(QAbstractTableModel):
     def populate(self, source):
         self.layoutAboutToBeChanged.emit()
         if type(source) is str and source.endswith('.xlsx'):
-            ws = openpyxl.load_workbook(source).active
-            self.frame = pd.DataFrame(ws.values)
+            wb = openpyxl.load_workbook(source)
+            self.frame = pd.DataFrame(wb.active.values)
         else:
             self.frame = pd.DataFrame(source)
         self.layoutChanged.emit()
+
+    def export(self, filename):
+        wb = openpyxl.Workbook()
+        for r in dataframe_to_rows(self.frame, index=False, header=False):
+            wb.active.append(r)
+        wb.save(filename)
 
     def range(self, name):
         return self.ranges[name]  # may raise KeyError

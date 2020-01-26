@@ -49,6 +49,20 @@ class MainWindow(QMainWindow):
         self.statusbar.showMessage('載入 %d 列資料。' % self.sheets[0].rowCount())
 
     @slot()
+    @slot(str)
+    def saveXlsx(self, xlsx=None):
+        if xlsx is None:
+            # dialog = QFileDialog(parent=self)
+            # dialog.setAcceptMode(QFileDialog.AcceptSave)
+            # dialog.setFileMode(QFileDialog.AnyFile)
+            # dialog.setNameFilter('Spreadsheets (*.xlsx)')
+            # if not dialog.exec_():
+            #     return False
+            # xlsx = dialog.selectedFiles()[0]
+            xlsx = 'output.xlsx'
+        self.sheets[1].export(xlsx)
+
+    @slot()
     def computeMatching(self):
         G = nx.Graph()
         intvws = self.sheets[0].range('interviewee')

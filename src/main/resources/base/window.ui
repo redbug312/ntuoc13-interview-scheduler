@@ -382,6 +382,22 @@
    <hints>
     <hint type="sourcelabel">
      <x>142</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scheduleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>computeMatching()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
      <y>538</y>
     </hint>
     <hint type="destinationlabel">
@@ -394,7 +410,7 @@
    <sender>fileWriteButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>computeMatching()</slot>
+   <slot>saveXlsx()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>142</x>
