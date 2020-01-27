@@ -25,7 +25,6 @@ class MainWindow(QMainWindow):
         self.sheets = [SpreadsheetTableModel() for _ in range(2)]
         self.inputTableView.setModel(self.sheets[0])
         self.outputTableView.setModel(self.sheets[1])
-        self.tabWidget.removeTab(1)
 
     @slot()
     @slot(str)
@@ -64,25 +63,32 @@ class MainWindow(QMainWindow):
 
     @slot()
     def computeMatching(self):
-        G = nx.Graph()
         intvws = self.sheets[0].range('interviewee')
         tmslts = self.sheets[0].range('timeslot')
+        cap = self.capacitySpinbox.value()
+        # Calculate maximum-flow
+        G = nx.DiGraph()
         for interviewee, timeslots in zip(intvws, tmslts):
-            G.add_node(interviewee, bipartite=0)
-            G.add_nodes_from(timeslots.split(', '), bipartite=1)
-            G.add_edges_from([(interviewee, t) for t in timeslots.split(', ')])
-        matches = {}
-        for B in nx.connected_components(G):
-            matches.update(nx.bipartite.maximum_matching(G.subgraph(B)))
-        right = [node[0] for node in G.nodes(data=True) if node[1]['bipartite'] == 1]
-        # import matplotlib.pyplot as plt
-        # nx.draw(G, pos=nx.bipartite_layout(G, left))
-        # nx.draw_networkx_labels(G, pos=nx.bipartite_layout(G, left))
-        # plt.show()
+            if interviewee is None or timeslots is None:
+                continue
+            for timeslot in timeslots.split(', '):
+                G.add_edge('source', timeslot, capacity=cap)
+                G.add_edge(timeslot, interviewee, capacity=1)
+            G.add_edge(interviewee, 'sink', capacity=1)
+        flow_value, flow_dict = nx.maximum_flow(G, 'source', 'sink')
+        # Convert maximum-flow to maximum-matching
+        matches = {timeslot: [timeslot] +  # columnhead
+                             [interviewee for interviewee, flow
+                              in flow_dict[timeslot].items() if flow]
+                   for timeslot in G.successors('source')}
+        matches['無法排入'] = ['無法排入'] + \
+            [interviewee for interviewee in G.predecessors('sink')
+             if flow_dict[interviewee]['sink'] == 0]
+        self.sheets[1].populate(matches)
+        self.sheets[1].setColumnhead(True)
+        # Views
         self.tabWidget.addTab(self.outputSheetTab, '排程結果')
-        data = [[key, matches[key] if key in matches else '']
-                for key in right]
-        self.sheets[1].populate(data)
+        self.tabWidget.setCurrentIndex(1)
 
     @slot()
     def updateSheetRanges(self):
