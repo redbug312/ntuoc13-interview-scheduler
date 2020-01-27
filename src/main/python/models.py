@@ -20,13 +20,16 @@ class SpreadsheetTableModel(QAbstractTableModel):
         self.frame = pd.DataFrame()
         self.columnhead = False
 
-    def populate(self, source):
+    def populate(self, src):
         self.layoutAboutToBeChanged.emit()
-        if type(source) is str and source.endswith('.xlsx'):
-            wb = openpyxl.load_workbook(source)
+        if type(src) is str and src.endswith('.xlsx'):
+            wb = openpyxl.load_workbook(src)
             self.frame = pd.DataFrame(wb.active.values)
+        elif type(src) is dict:
+            self.frame = pd.DataFrame.from_dict(src, orient='index')\
+                                     .sort_index().transpose()
         else:
-            self.frame = pd.DataFrame(source)
+            self.frame = pd.DataFrame(src)
         self.layoutChanged.emit()
 
     def export(self, filename):
