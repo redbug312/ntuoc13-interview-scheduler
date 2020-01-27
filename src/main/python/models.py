@@ -119,8 +119,8 @@ class SpreadsheetRange:
             yield self.sheet.data(index)
 
     def include(self, index):
-        return self.rows[0] <= index.row() < self.rows[1] and \
-               self.cols[0] <= index.column() < self.cols[1]
+        return (self.rows[0] <= index.row() < self.rows[1] and
+                self.cols[0] <= index.column() < self.cols[1])
 
     def corners(self):
         return [self.sheet.index(*pos) for pos in zip(self.rows, self.cols)]

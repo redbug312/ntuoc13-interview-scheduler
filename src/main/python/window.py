@@ -21,6 +21,7 @@ class MainWindow(QMainWindow):
         uic.loadUi(context.placeholderUi, self.placeholderFrame)
         self.placeholderFrame.setOverlay(self.inputTableView)
         self.placeholderFrame.setContent(context.excelPixmap, '回應表格未開啟')
+        self.tabWidget.removeTab(1)
 
         self.sheets = [SpreadsheetTableModel() for _ in range(2)]
         self.inputTableView.setModel(self.sheets[0])
