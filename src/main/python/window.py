@@ -26,6 +26,19 @@ class MainWindow(QMainWindow):
         self.inputTableView.setModel(self.sheets[0])
         self.outputTableView.setModel(self.sheets[1])
 
+        self.connects = [sig.connect(slt) for sig, slt in {
+            self.fileLoadButton.clicked:       self.openXlsx,
+            self.scheduleButton.clicked:       self.computeMatching,
+            self.fileWriteButton.clicked:      self.saveXlsx,
+            self.placeholderFrame.dropped:     lambda f: self.openXlsx(f),
+            self.inputTableView.dropped:       lambda f: self.openXlsx(f),
+            self.columnheadCheckbox.clicked:   lambda: self.updateSpreadsheet(2),
+            self.intvwSpinbox.valueChanged:    lambda: self.updateSpreadsheet(4),
+            self.tmsltSpinbox.valueChanged:    lambda: self.updateSpreadsheet(4),
+            self.startRowSpinbox.valueChanged: lambda: self.updateSpreadsheet(4),
+            self.endRowSpinbox.valueChanged:   lambda: self.updateSpreadsheet(4),
+        }.items()]
+
     @slot()
     @slot(str)
     def openXlsx(self, xlsx=None):
@@ -41,14 +54,12 @@ class MainWindow(QMainWindow):
         self.sheets[0].populate(xlsx)
         # View
         self.placeholderFrame.hide()
-        self.updateSheetColumnhead()
-        self.updateSheetRanges()
+        self.updateSpreadsheet()
         self.intvwSpinbox.setStyleSheet('background-color: %s' % INTVW_COLOR.name())
         self.tmsltSpinbox.setStyleSheet('background-color: %s' % TMSLT_COLOR.name())
         self.statusbar.showMessage('載入 %d 列資料。' % self.sheets[0].rowCount())
 
     @slot()
-    @slot(str)
     def saveXlsx(self, xlsx=None):
         if xlsx is None:
             # dialog = QFileDialog(parent=self)
@@ -90,15 +101,25 @@ class MainWindow(QMainWindow):
         self.tabWidget.addTab(self.outputSheetTab, '排程結果')
         self.tabWidget.setCurrentIndex(1)
 
-    @slot()
-    def updateSheetRanges(self):
-        rows = self.startRowSpinbox.value(), self.endRowSpinbox.value()
-        cols_intvw = (self.intvwSpinbox.value(), ) * 2
-        cols_tmslt = (self.tmsltSpinbox.value(), ) * 2
-        self.sheets[0].setRange('interviewee', rows, cols_intvw, INTVW_COLOR)
-        self.sheets[0].setRange('timeslot', rows, cols_tmslt, TMSLT_COLOR)
-
-    @slot()
-    def updateSheetColumnhead(self):
-        checked = self.columnheadCheckbox.isChecked()
-        self.sheets[0].setColumnhead(checked)
+    @slot(int)
+    def updateSpreadsheet(self, flags=7):
+        # Update order determined by the spinboxes read/write operations
+        if flags & 1:  # shape of spreadsheet
+            cols = self.sheets[0].columnCount()
+            self.intvwSpinbox.setMaximum(cols)
+            self.tmsltSpinbox.setMaximum(cols)
+            rows = self.sheets[0].rowCount()
+            self.startRowSpinbox.setMaximum(rows)
+            self.endRowSpinbox.setMaximum(rows)
+            self.endRowSpinbox.setValue(rows)
+        if flags & 2:  # columnhead of spreadsheet
+            checked = self.columnheadCheckbox.isChecked()
+            self.sheets[0].setColumnhead(checked)
+            self.startRowSpinbox.setMinimum(1 + int(checked))
+            self.endRowSpinbox.setMinimum(1 + int(checked))
+        if flags & 4:  # ranges in spreadsheet
+            rows = self.startRowSpinbox.value(), self.endRowSpinbox.value()
+            cols_intvw = (self.intvwSpinbox.value(), ) * 2
+            cols_tmslt = (self.tmsltSpinbox.value(), ) * 2
+            self.sheets[0].setRange('interviewee', rows, cols_intvw, INTVW_COLOR)
+            self.sheets[0].setRange('timeslot', rows, cols_tmslt, TMSLT_COLOR)
