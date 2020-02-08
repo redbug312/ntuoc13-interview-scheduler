@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
 
         self.connects = [sig.connect(slt) for sig, slt in {
             self.fileLoadButton.clicked:       self.openXlsx,
-            self.scheduleButton.clicked:       self.computeMatching,
+            self.scheduleButton.clicked:       self.schedule,
             self.fileWriteButton.clicked:      self.saveXlsx,
             self.placeholderFrame.dropped:     lambda f: self.openXlsx(f),
             self.inputTableView.dropped:       lambda f: self.openXlsx(f),
@@ -44,14 +44,14 @@ class MainWindow(QMainWindow):
     @slot(str)
     def openXlsx(self, xlsx=None):
         if xlsx is None:
-            # dialog = QFileDialog(parent=self)
+            # dialog = QFileDialog()
             # dialog.setAcceptMode(QFileDialog.AcceptSave)
             # dialog.setFileMode(QFileDialog.ExistingFile)
             # dialog.setNameFilter('Spreadsheets (*.xlsx)')
             # if not dialog.exec_():
             #     return False
             # xlsx = dialog.selectedFiles()[0]
-            xlsx = 'example.xlsx'
+            xlsx = 'oc12.xlsx'
         self.sheets[0].populate(xlsx)
         # View
         self.placeholderFrame.hide()
@@ -63,7 +63,7 @@ class MainWindow(QMainWindow):
     @slot()
     def saveXlsx(self, xlsx=None):
         if xlsx is None:
-            # dialog = QFileDialog(parent=self)
+            # dialog = QFileDialog()
             # dialog.setAcceptMode(QFileDialog.AcceptSave)
             # dialog.setFileMode(QFileDialog.AnyFile)
             # dialog.setNameFilter('Spreadsheets (*.xlsx)')
@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
         self.sheets[1].export(xlsx)
 
     @slot()
-    def computeMatching(self):
+    def schedule(self):
         intvws = self.sheets[0].range('interviewee')
         tmslts = self.sheets[0].range('timeslot')
         cap = self.capacitySpinbox.value()
