@@ -32,7 +32,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>選擇欄位 (columns)</string>
+         <string>回應表格設定</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -63,7 +63,7 @@
               <number>1</number>
              </property>
              <property name="value">
-              <number>3</number>
+              <number>21</number>
              </property>
             </widget>
            </item>
@@ -73,21 +73,35 @@
               <number>1</number>
              </property>
              <property name="value">
-              <number>5</number>
+              <number>37</number>
              </property>
             </widget>
            </item>
           </layout>
          </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>選擇列數 (rows)</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="Line" name="line">
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="midLineWidth">
+            <number>1</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="columnheadCheckbox">
+           <property name="text">
+            <string>排序時固定首列</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="0">
@@ -97,6 +111,13 @@
              </property>
              <property name="buddy">
               <cstring>startRowSpinbox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="startRowSpinbox">
+             <property name="minimum">
+              <number>1</number>
              </property>
             </widget>
            </item>
@@ -110,23 +131,40 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="startRowSpinbox">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="1">
             <widget class="QSpinBox" name="endRowSpinbox">
              <property name="minimum">
               <number>1</number>
              </property>
-             <property name="value">
-              <number>6</number>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>排程結果設定</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="capacityLabel">
+             <property name="text">
+              <string>時段人數</string>
+             </property>
+             <property name="buddy">
+              <cstring>capacitySpinbox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="capacitySpinbox">
+             <property name="minimum">
+              <number>1</number>
              </property>
             </widget>
            </item>
@@ -156,9 +194,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="scheduleButton">
+        <property name="text">
+         <string>找出最佳排程(&amp;F)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="fileWriteButton">
         <property name="text">
-         <string>匯出排程結果(&amp;E)</string>
+         <string>儲存排程結果(&amp;S)</string>
         </property>
        </widget>
       </item>
@@ -171,26 +216,36 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="tab">
+        <widget class="QWidget" name="inputSheetTab">
          <attribute name="title">
           <string>回應表格</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QTableView" name="inputTableView">
-            <property name="acceptDrops">
-             <bool>true</bool>
-            </property>
+           <widget class="DropableTableView" name="inputTableView">
             <property name="tabKeyNavigation">
              <bool>false</bool>
             </property>
             <property name="selectionMode">
              <enum>QAbstractItemView::NoSelection</enum>
             </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
-           <widget class="DragDropFrame" name="dragDropFrame"/>
+           <widget class="DropableFrame" name="placeholderFrame"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="outputSheetTab">
+         <attribute name="title">
+          <string>排程結果</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QTableView" name="outputTableView"/>
           </item>
          </layout>
         </widget>
@@ -219,128 +274,33 @@
    <header location="global">widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>DragDropFrame</class>
+   <class>DropableFrame</class>
    <extends>QFrame</extends>
    <header location="global">widgets.h</header>
    <container>1</container>
    <slots>
-    <signal>dropFile(QString)</signal>
+    <signal>dropped(QString)</signal>
    </slots>
   </customwidget>
+  <customwidget>
+   <class>DropableTableView</class>
+   <extends>QTableView</extends>
+   <header location="global">widgets.h</header>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>intvwSpinbox</tabstop>
+  <tabstop>tmsltSpinbox</tabstop>
+  <tabstop>columnheadCheckbox</tabstop>
+  <tabstop>startRowSpinbox</tabstop>
+  <tabstop>endRowSpinbox</tabstop>
+  <tabstop>capacitySpinbox</tabstop>
+  <tabstop>fileLoadButton</tabstop>
+  <tabstop>scheduleButton</tabstop>
+  <tabstop>fileWriteButton</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>inputTableView</tabstop>
+  <tabstop>outputTableView</tabstop>
+ </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>intvwSpinbox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateSheetRanges()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>104</x>
-     <y>72</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tmsltSpinbox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateSheetRanges()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>104</x>
-     <y>102</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>endRowSpinbox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateSheetRanges()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>104</x>
-     <y>206</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>startRowSpinbox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateSheetRanges()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>104</x>
-     <y>176</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fileLoadButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>openXlsx()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>142</x>
-     <y>538</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fileWriteButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>computeMatching()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>142</x>
-     <y>567</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dragDropFrame</sender>
-   <signal>dropFile(QString)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>loadXlsx(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>561</x>
-     <y>368</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>548</x>
-     <y>560</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>
