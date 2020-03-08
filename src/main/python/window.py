@@ -45,14 +45,14 @@ class MainWindow(QMainWindow):
     @slot(str)
     def openXlsx(self, xlsx=None):
         if xlsx is None:
-            # dialog = QFileDialog()
-            # dialog.setAcceptMode(QFileDialog.AcceptSave)
-            # dialog.setFileMode(QFileDialog.ExistingFile)
-            # dialog.setNameFilter('Spreadsheets (*.xlsx)')
-            # if not dialog.exec_():
-            #     return False
-            # xlsx = dialog.selectedFiles()[0]
-            xlsx = 'oc12.xlsx'
+            dialog = QFileDialog()
+            dialog.setAcceptMode(QFileDialog.AcceptOpen)
+            dialog.setFileMode(QFileDialog.ExistingFile)
+            dialog.setNameFilter('Spreadsheets (*.xlsx)')
+            if not dialog.exec_():
+                return False
+            xlsx = dialog.selectedFiles()[0]
+            # xlsx = 'oc12.xlsx'
         self.sheets[0].populate(xlsx)
         # View
         self.placeholderFrame.hide()
@@ -64,14 +64,14 @@ class MainWindow(QMainWindow):
     @slot()
     def saveXlsx(self, xlsx=None):
         if xlsx is None:
-            # dialog = QFileDialog()
-            # dialog.setAcceptMode(QFileDialog.AcceptSave)
-            # dialog.setFileMode(QFileDialog.AnyFile)
-            # dialog.setNameFilter('Spreadsheets (*.xlsx)')
-            # if not dialog.exec_():
-            #     return False
-            # xlsx = dialog.selectedFiles()[0]
-            xlsx = 'output.xlsx'
+            dialog = QFileDialog()
+            dialog.setAcceptMode(QFileDialog.AcceptSave)
+            dialog.setFileMode(QFileDialog.AnyFile)
+            dialog.setNameFilter('Spreadsheets (*.xlsx)')
+            if not dialog.exec_():
+                return False
+            xlsx = dialog.selectedFiles()[0]
+            # xlsx = 'output.xlsx'
         if not xlsx.endswith('.xlsx'):
             xlsx += '.xlsx'
         self.sheets[1].export(xlsx)
