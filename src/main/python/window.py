@@ -38,6 +38,7 @@ class MainWindow(QMainWindow):
             self.tmsltSpinbox.valueChanged:    lambda: self.updateSpreadsheet(4),
             self.startRowSpinbox.valueChanged: lambda: self.updateSpreadsheet(4),
             self.endRowSpinbox.valueChanged:   lambda: self.updateSpreadsheet(4),
+            self.outputTableView.selectionModel().selectionChanged: self.selectOutput,
         }.items()]
 
     @slot()
@@ -71,6 +72,8 @@ class MainWindow(QMainWindow):
             #     return False
             # xlsx = dialog.selectedFiles()[0]
             xlsx = 'output.xlsx'
+        if not xlsx.endswith('.xlsx'):
+            xlsx += '.xlsx'
         self.sheets[1].export(xlsx)
 
     @slot()
@@ -106,6 +109,7 @@ class MainWindow(QMainWindow):
         self.sheets[1].populate(matches)
         self.sheets[1].setColumnhead(True)
         # Views
+        self.statusbar.showMessage(f'排程完成，總共安排 {flow_value} 位面試人員')
         self.tabWidget.addTab(self.outputSheetTab, '排程結果')
         self.tabWidget.setCurrentIndex(1)
 
@@ -132,6 +136,13 @@ class MainWindow(QMainWindow):
             self.sheets[0].setRange('interviewee', rows, cols_intvw, INTVW_COLOR)
             self.sheets[0].setRange('timeslot', rows, cols_tmslt, TMSLT_COLOR)
 
+    @slot()
+    def selectOutput(self):
+        indices = self.outputTableView.selectedIndexes()
+        interviewee = self.outputTableView.model().data(indices[0])
+        if interviewee is not None:
+            timeslots = '、'.join(self.inputs[interviewee])
+            self.statusbar.showMessage(f'{interviewee}：{timeslots}')
 
 
 def find_duplicates(items):
