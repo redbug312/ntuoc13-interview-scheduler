@@ -3,7 +3,7 @@ import networkx as nx
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot as slot
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
 
 from models import SpreadsheetTableModel
 
@@ -78,12 +78,16 @@ class MainWindow(QMainWindow):
         intvws = self.sheets[0].range('interviewee')
         tmslts = self.sheets[0].range('timeslot')
         cap = self.capacitySpinbox.value()
+        # Sanitize data from input spreadsheet
+        self.inputs = {interviewee: timeslots.split(', ') if timeslots is not None else []
+                       for interviewee, timeslots in zip(intvws, tmslts) if interviewee is not None}
+        duplicates = find_duplicates(intvws)
+        if duplicates:
+            QMessageBox.warning(self, '出現重複回應', f'重複的面試人員為：{"、".join(duplicates)}')
         # Calculate maximum-flow
         G = nx.DiGraph()
-        for interviewee, timeslots in zip(intvws, tmslts):
-            if interviewee is None or timeslots is None:
-                continue
-            for timeslot in timeslots.split(', '):
+        for interviewee, timeslots in self.inputs.items():
+            for timeslot in timeslots:
                 G.add_edge('source', timeslot, capacity=cap)
                 G.add_edge(timeslot, interviewee, capacity=1)
             G.add_edge(interviewee, 'sink', capacity=1)
@@ -93,9 +97,12 @@ class MainWindow(QMainWindow):
                              [interviewee for interviewee, flow
                               in flow_dict[timeslot].items() if flow]
                    for timeslot in G.successors('source')}
+        matches['時段為空'] = ['時段為空'] + \
+            [interviewee for interviewee in G.predecessors('sink')
+             if G.in_degree(interviewee) == 0]
         matches['無法排入'] = ['無法排入'] + \
             [interviewee for interviewee in G.predecessors('sink')
-             if flow_dict[interviewee]['sink'] == 0]
+             if G.in_degree(interviewee) != 0 and flow_dict[interviewee]['sink'] == 0]
         self.sheets[1].populate(matches)
         self.sheets[1].setColumnhead(True)
         # Views
@@ -124,3 +131,10 @@ class MainWindow(QMainWindow):
             cols_tmslt = (self.tmsltSpinbox.value(), ) * 2
             self.sheets[0].setRange('interviewee', rows, cols_intvw, INTVW_COLOR)
             self.sheets[0].setRange('timeslot', rows, cols_tmslt, TMSLT_COLOR)
+
+
+
+def find_duplicates(items):
+    seen = set()
+    dups = [item for item in items if item in seen or seen.add(item)]
+    return dups
