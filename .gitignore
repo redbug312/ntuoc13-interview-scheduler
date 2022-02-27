@@ -1,4 +1,4 @@
-env/
+venv/
 target/
 src/main/python/__pycache__/
 
