@@ -2,5 +2,5 @@
     "app_name": "ntuoc13-interview-scheduler",
     "author": "RedBug312",
     "main_module": "src/main/python/main.py",
-    "version": "0.2.2"
+    "version": "1.0.0"
 }
