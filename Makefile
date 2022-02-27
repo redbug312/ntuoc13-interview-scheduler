@@ -1,21 +1,28 @@
-.PHONY: start
-
+.PHONY: build start
 
 ifeq ($(OS), Windows_NT)
-    ENV ?= . $(shell pwd)/env/scripts/activate; \
+    PYTHON3 ?= python
+    ENV ?= . $(shell pwd)/venv/scripts/activate; \
         PYTHONPATH=$(shell pwd) \
         PATH=/c/Program\ Files\ \(x86\)/NSIS/:$$PATH
 else
-    ENV ?= . $(shell pwd)/env/bin/activate; \
+    PYTHON3 ?= python3.6
+    ENV ?= . $(shell pwd)/venv/bin/activate; \
         PYTHONPATH=$(shell pwd)
 endif
 
+venv: $(patsubst %,requirements/%.txt, base $(REQUIREMENTS))
+	virtualenv -p $(PYTHON3) venv
+	for requirement in $^; do \
+		$(ENV) $(PYTHON3) -m pip install -r $$requirement; \
+	done
+	touch $@  # update timestamp
 
 all: start
 
-build:
+build: venv
 	$(ENV) fbs freeze
 	$(ENV) fbs installer
 
-start:
+start: venv
 	$(ENV) fbs run
