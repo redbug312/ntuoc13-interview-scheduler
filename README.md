@@ -1,15 +1,29 @@
 [![Build Status](https://api.travis-ci.org/RedBug312/ntuoc13-interview-scheduler.svg?branch=master)](https://travis-ci.com/RedBug312/ntuoc13-interview-scheduler)
 
-`fbs freeze`
+Interviews scheduler desktop app for National Taiwan University Orientation Camp.
 
-On Windows, ensure Visual C++ Redistribute for Visual Studio [2010][msvcr100-dll], [2012][msvcr110-dll], [2015][crtvcr140-dll] are installed.
+![screenshot for input sheet](media/screenshot-input.png)
+![screenshot for output sheet](media/screenshot-output.png)
 
-[msvcr100-dll]: https://www.microsoft.com/zh-TW/download/details.aspx?id=14632
-[msvcr110-dll]: https://www.microsoft.com/zh-TW/download/details.aspx?id=30679
-[crtvcr140-dll]: https://www.microsoft.com/zh-TW/download/details.aspx?id=53587
+## Quickstart
 
-`fbs installer`
+```bash
+$ sudo apt install python3.6-venv
+$ make start
+```
 
-On Windows, ensure [NSIS][nsis] is installed.
+It builds on Python 3.6 for fbs free version.
 
-[nsis]: https://nsis.sourceforge.io/Download
+The app uses maximum flow algorithm from [NetworkX] to solve the scheduling
+problem, and the implementation refers to `src/main/python/window.py`. The input
+sheet takes `xlsx` format only.
+
+## Credits
+
+- [PyQt5] - Python bindings for the Qt cross platform application toolkit.
+- [Fman] - Create Python GUIs with Qt in minutes.
+- [NetworkX] - Network Analysis in Python.
+
+[PyQt5]: https://www.riverbankcomputing.com/software/pyqt/
+[Fman]: https://build-system.fman.io/
+[NetworkX]: https://networkx.org/
